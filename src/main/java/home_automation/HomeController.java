@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import home_automation.model.BooleanState;
+import home_automation.model.BooleanRequest;
 
 /**
  * Simple Spring Boot Application to serve UI/rest endpoints.
@@ -36,9 +36,9 @@ public class HomeController {
      */
     @RequestMapping("/set/light")
     @ResponseBody
-    public ResponseEntity setLight(@RequestBody final BooleanState requestBody) {
+    public ResponseEntity setLight(@RequestBody final BooleanRequest requestBody) {
 
-        final boolean on = requestBody.isState();
+        final boolean on = requestBody.isActive();
 
         // we check whether we need to take action before we proceed with the costly
         // synchronized call to setLightOn
