@@ -3,13 +3,15 @@ package home_automation;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import home_automation.model.BooleanRequest;
+import home_automation.model.BooleanResponse;
+import home_automation.model.IntegerRequest;
+import home_automation.model.IntegerResponse;
 
 /**
  * Simple Spring Boot Application to serve UI/rest endpoints.
@@ -38,46 +40,48 @@ public class HomeController {
     @ResponseBody
     public ResponseEntity setLight(@RequestBody final BooleanRequest requestBody) {
 
-        final boolean on = requestBody.isActive();
+        final boolean on = requestBody.isValue();
 
         // we check whether we need to take action before we proceed with the costly
         // synchronized call to setLightOn
         if(on != home.isLightOn()) {
             home.setLightOn(on);
         }
-        return ResponseEntity.ok().body("The lights are turned " + (home.isLightOn() ? "on" : "off"));
+        return ResponseEntity.ok().body(new BooleanResponse(home.isLightOn(), "The lights are turned " + (home.isLightOn() ? "on" : "off")));
     }
 
     /**
      * Set curtain to open or closed.
-     * @param open whether the curtains are open or closed
+     * @param requestBody whether the curtains are open or closed
      * @return the response with a message indicating whether curtains are open or closed.
      */
-    @RequestMapping("/set/curtain/{open}")
-    public ResponseEntity setCurtain(@PathVariable("open") final boolean open) {
+    @RequestMapping("/set/curtain")
+    public ResponseEntity setCurtain(@RequestBody final BooleanRequest requestBody) {
+        final boolean open = requestBody.isValue();
 
         // we check whether we need to take action before we proceed with the costly
         // synchronized call to setCurtainOn
         if(open != home.isCurtainOpen()) {
             home.setCurtainOpen(open);
         }
-        return ResponseEntity.ok().body("The curtains are " + (home.isCurtainOpen() ? "open" : "shut"));
+        //return ResponseEntity.ok().body("The curtains are " + (home.isCurtainOpen() ? "open" : "shut"));
+        return ResponseEntity.ok().body(new BooleanResponse(home.isCurtainOpen(), "The curtains are " + (home.isCurtainOpen() ? "open" : "shut")));
     }
 
     /**
      * Set the home temperature
-     * @param temp the temperature in Fahrenheit. this number should always be an integer
+     * @param tempBody the temperature in Fahrenheit. this number should always be an integer
      * @return the response with a message indicating whether curtains are open or closed.
      */
-    @RequestMapping("/set/temperature/{temp}")
-    public ResponseEntity setTemperature(@PathVariable("temp") final int temp) {
-
+    @RequestMapping("/set/temperature")
+    public ResponseEntity setTemperature(@RequestBody final IntegerRequest tempBody) {
+        final int temp = tempBody.getValue();
         // we check whether we need to take action before we proceed with the costly
         // synchronized call to setCurtainOn
         if(temp != home.getTemperature()) {
             home.setTemperature(temp);
         }
-        return ResponseEntity.ok().body("The current home temperature is set to " + home.getTemperature() + " Fahrenheit");
+        return ResponseEntity.ok().body(new IntegerResponse(home.getTemperature(), "The current home temperature is set to " + home.getTemperature() + " Fahrenheit"));
     }
 
 
@@ -95,6 +99,12 @@ public class HomeController {
     public ResponseEntity getTemperature() {
         return ResponseEntity.ok(home.getTemperature());
     }
+
+    @RequestMapping("/all")
+    public ResponseEntity getAllDeviceStates() {
+        return ResponseEntity.ok(home);
+    }
+
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(HomeController.class, args);

@@ -9,20 +9,20 @@ package home_automation.model;
 
 public class BooleanRequest {
 
-    private boolean active;
+    private boolean value;
 
     public BooleanRequest() {
     }
 
-    public BooleanRequest(final boolean active) {
-        this.active = active;
+    public BooleanRequest(final boolean value) {
+        this.value = value;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isValue() {
+        return value;
     }
 
-    public void setActive(final boolean active) {
-        this.active = active;
+    public void setValue(final boolean value) {
+        this.value = value;
     }
 }
