@@ -8,3 +8,6 @@ You can start the app by typing in the root directory:
 
 ``mvn spring-boot: run``
 
+then navigate to the web application at
+ 
+``localhost:8080``
