@@ -105,10 +105,11 @@ class ControlPanelSlider extends React.Component{
   render() {
     var self = this;
     return (
-        <div className="col-xs-2 success">
+        <div className="col-xs-2">
 
-          <input className="col-xs-2 success"
-                 type="range" id="myRange" min="60" max="90" value={this.state.value} onChange={self.handleChange}/>
+          <input className="col-xs-2"
+                 type="range" id="myRange" min="60" max="90"
+                 style={{top:"5px"}} value={this.state.value} onChange={self.handleChange}/>
           <div>{self.state.value}</div>
         </div>
     );}
