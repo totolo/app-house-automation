@@ -14,15 +14,12 @@ class MainDiv extends React.Component{
       message: ""
     };
   }
-  // componentDidMount() {
-  //   fetchDataAndSetState('/admin/triggers', this)
-  // }
   render() {
     var self = this;
     return (
         <div>
           <h1>Home Automation</h1>
-          <div className="bg-info">
+          <div className="bg-info" style={{width: "300px"}}>
             {self.state.message}
           </div>
           <div>
@@ -57,10 +54,12 @@ class ControlPanelButton extends React.Component{
     return (
         <div>
           <button onClick={self.fireRequest.bind(self, self.props.deviceType)}
-                  className="btn btn-primary">
-            {self.props.deviceType} is {self.state.value.toString()}
+                  className="btn btn-primary"
+                  style={{width : "120px"}}>
+            {self.props.deviceType} is {self.state.value ? 'on' : 'off'}
           </button>
-          <div style={{backgroundColor: self.state.value ? "yellow" : "black"}}>{self.state.value.toString()}</div>
+          <div className="col-xs-2 btn" style={{backgroundColor: self.state.value ? "yellow" : "black"}}>{self.state.value ? 'on' : 'off'}</div>
+          <br/>
         </div>
 
     );}
@@ -72,7 +71,7 @@ class ControlPanelSlider extends React.Component{
 
     // default to a comfortable 70 degrees
     this.state = {
-      value: 90
+      value: 70
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -107,10 +106,10 @@ class ControlPanelSlider extends React.Component{
     var self = this;
     return (
         <div className="col-xs-2 success">
-          {this.state.message}
+
+          <input className="col-xs-2 success"
+                 type="range" id="myRange" min="60" max="90" value={this.state.value} onChange={self.handleChange}/>
           <div>{self.state.value}</div>
-          <input type="range" id="myRange" min="60" max="90" value={this.state.value} onChange={self.handleChange}>
-          </input>
         </div>
     );}
 }
@@ -161,9 +160,6 @@ ReactDOM.render((
     <Router history={hashHistory}>
       <Route path="/" component={MainDiv}>
         <IndexRoute component={MainDiv}/>
-        {/*<Route path="/triggers" component={MainTriggerTable}/>*/}
-        {/*<Route path="/triggers/history/:triggerType/:triggerId" component={IndividualTriggerTable}/>*/}
-        {/*<Route path="/events" component={MainEventTable}/>*/}
       </Route>
     </Router>
 ), document.getElementById('container'));

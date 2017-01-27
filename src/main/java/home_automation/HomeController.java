@@ -85,21 +85,37 @@ public class HomeController {
     }
 
 
+    /**
+     * Get the state of the light
+     * @return whether the light is on
+     */
     @RequestMapping("/light")
     public ResponseEntity isLightOn() {
         return ResponseEntity.ok(home.isLightOn());
     }
 
+    /**
+     * Get the state of the curtains
+     * @return whether the curtains are open
+     */
     @RequestMapping("/curtain")
     public ResponseEntity isCurtainOpen() {
         return ResponseEntity.ok(home.isCurtainOpen());
     }
 
+    /**
+     * Get the temperature
+     * @return what the temperature is
+     */
     @RequestMapping("/temperature")
     public ResponseEntity getTemperature() {
         return ResponseEntity.ok(home.getTemperature());
     }
 
+    /**
+     * Get the state of the whole home
+     * @return the object containing the state of all devices
+     */
     @RequestMapping("/all")
     public ResponseEntity getAllDeviceStates() {
         return ResponseEntity.ok(home);
